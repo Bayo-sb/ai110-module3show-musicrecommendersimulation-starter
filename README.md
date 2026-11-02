@@ -681,7 +681,7 @@ My recommender is small and simple, and I expect this bias in it:
 
 - **Labels count more than sound.** Genre and mood must match exactly, so a song labelled "indie pop" gets no genre credit for a pop fan even though it sounds similar. Mood alone is worth 40 of 100 points, so one label can outweigh a close fit on energy and tempo.
 
-My recommendations depend on a small catalog that lacks medium-energy songs and several genres and moods. This limits the choices available to some listeners, even when the scoring works correctly. Adding popularity could favor mainstream songs, while detailed mood tags and lyrical themes could reflect my own interpretation rather than the listener’s. I would need listener feedback to check whether the added features improve recommendations.
+Also My recommendations depend on a small catalog that lacks medium-energy songs and several genres and moods. This limits the choices available to some listeners, even when the scoring works correctly. Adding popularity could favor mainstream songs, while detailed mood tags and lyrical themes could reflect my own interpretation rather than the listener’s. I would need listener feedback to check whether the added features improve recommendations.
 
 
 
