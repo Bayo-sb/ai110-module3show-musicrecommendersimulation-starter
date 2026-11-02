@@ -39,8 +39,6 @@ Preserve existing scoring modes and alphabetical tie-breaking. Explain each acti
 
 Verify that existing profiles retain their results without advanced preferences, new preferences can change rankings, scores remain between 0 and 100, exact matches earn 100, and missing preferences and empty tag lists do not cause errors. Run `python -m src.main` with both existing and advanced profiles.
 
-In `ai_interactions.md`, record this prompt, summarize the generated changes, and list the checks actually performed. Add a clearly labelled "Manual verification — pending" checklist for me to complete. Do not claim I performed checks myself. Update relevant documentation and sample output to reflect the final behavior. Show the changes and actual verification results. Do not commit yet.
-
 **What did the agent generate or change?**
 
 - `data/songs.csv`: appended five columns to all 10 songs. The first ten columns were not changed. The values are varied for testing (decades 1990 to 2020, popularity 34 to 90, instrumentalness 0.02 to 0.95).
