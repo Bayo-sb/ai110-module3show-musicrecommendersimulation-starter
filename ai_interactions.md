@@ -14,7 +14,7 @@ Extend RecomViber with five new song attributes (popularity, release decade, det
 
 **Prompts used:**
 
-Extend RecomViber with five new song attributes. First inspect the current CSV, loader, profiles, and scoring functions.
+Extend RecomViber with five new song attributes. Ensure that you first inspect the current CSV, loader, profiles, and scoring functions.
 
 Add these columns to `data/songs.csv`: popularity (integer 0 to 100), release_decade (integer such as 1990 or 2020), detailed_mood_tags (semicolon-separated tags), instrumentalness (float 0 to 1) and lyrical_themes (semicolon-separated tags).
 
@@ -39,6 +39,8 @@ Preserve existing scoring modes and alphabetical tie-breaking. Explain each acti
 
 Verify that existing profiles retain their results without advanced preferences, new preferences can change rankings, scores remain between 0 and 100, exact matches earn 100, and missing preferences and empty tag lists do not cause errors. Run `python -m src.main` with both existing and advanced profiles.
 
+In `ai_interactions.md`, record this prompt, summarize the generated changes, and list the checks actually performed. Add a clearly labelled "Manual verification — pending" checklist for me to complete. Do not claim I performed checks myself. Update relevant documentation and sample output to reflect the final behavior. Show the changes and actual verification results. Do not commit yet.
+
 **What did the agent generate or change?**
 
 - `data/songs.csv`: appended five columns to all 10 songs. The first ten columns were not changed. The values are varied for testing (decades 1990 to 2020, popularity 34 to 90, instrumentalness 0.02 to 0.95).
@@ -56,7 +58,7 @@ Verify that existing profiles retain their results without advanced preferences,
 
 **What did you verify or fix manually?**
 
-Claude ran these three checks. I reviewed the results and confirm them.
+ I reviewed the results and confirm the followings
 
 1. **Loader types.** Song 1 loads with `popularity` and `release_decade` as integers, `instrumentalness` as a float, and both tag fields as lists. A multi-word tag like "city life" stays whole.
 2. **Existing profiles unchanged.** For all six original profiles, the titles, order, scores and reasons were identical to the code from before the change. Claude compared them exactly against a saved copy of the old file.
