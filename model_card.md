@@ -27,8 +27,7 @@ I run it with `python -m src.main`. It tries six sample listeners and prints the
 
 ## 3. Data Used
 
-**Size.** The catalog has 10 songs. I checked the count in `data/songs.csv`. I drafted 10 more songs, but I have not added them.
-
+**Size.** The catalog has 10 songs. I checked the count in `data/songs.csv`.
 **Columns.** Each song has fifteen columns. The first ten are `id`, `title`, `artist`, `genre`, `mood`, `energy`, `tempo_bpm`, `valence`, `danceability` and `acousticness`. I added five more: `popularity` (0 to 100), `release_decade`, `detailed_mood_tags`, `instrumentalness` (0 to 1) and `lyrical_themes`. The two tag columns hold tags separated by semicolons.
 
 **What I use for scoring.** Four columns every time: `genre`, `mood`, `energy` and `tempo_bpm`. The five new columns count only when the user asks for them (see section 4).
@@ -53,7 +52,7 @@ I run it with `python -m src.main`. It tries six sample listeners and prints the
 
 Every song gets a score out of 100. The songs with the highest scores are recommended.
 
-There are two versions of my weights. I explain both.
+I use the original weights and tested a second set temporarily.
 
 ### My original weights (my main design)
 
@@ -109,7 +108,7 @@ These are patterns I saw in my results.
 **The catalog has two energy groups.**
 
 - Under my original weights, all six top-five lists came from one group. Under the experimental weights, five of six did.
-- The three high-energy profiles (Pop, Rock and Sad) all got the same five songs. Only the order changed. The catalog has exactly five songs above 0.75.
+- The three high-energy profiles (Pop, Rock and Sad) all got the same five songs. Only the order changed. The catalog has five songs with energy of 0.75 or higher.
 - The five songs in the group "chill, relaxed, focused" are the same five low-energy songs. For these listeners, the mood credit and the energy score both push toward the same songs.
 
 **Exact matching depends on labels.** "Indie pop" does not match "pop". Rooftop Lights gets no genre points for a pop fan, even if it sounds similar.
@@ -129,8 +128,7 @@ These are patterns I saw in my results.
 
 **Why Gym Hero shows up for a happy pop listener.** Its mood is intense, so it earns 0 mood points. It still earns points for the rest. Under my original weights for High-Energy Pop, it got 20 for genre, 27.60 for energy and 8.25 for tempo. That is 55.85, which is third. Only three songs are labelled pop or happy, so it fills third place.
 
-**Tempo.** The tempo score drops steadily to a floor of zero. At a 180 BPM target, Midnight Coding (78 BPM) and Gym Hero (132 BPM) get 0 tempo points. Storm Runner (152 BPM) gets 3. It is not true that every song gets zero.
-
+**Tempo.** The tempo score drops steadily to a floor of zero. At a 180 BPM target, Midnight Coding (78 BPM) and Gym Hero (132 BPM) get 0 tempo points. Storm Runner (152 BPM) gets 3.
 **Scores are preference points, not probabilities.** A score of 72.60 is not a 72.6% chance that someone will like the song. It only shows how well the song fits what the user typed in, compared with the other songs.
 
 **What looked fine.** For the three baseline profiles (Pop, Lofi and Rock), the songs on top were the ones I expected. That is my judgment. It is not a measure of accuracy.
@@ -191,12 +189,12 @@ I compared all 15 pairs of profiles under my original weights. "Shared" means ho
 | Profiles compared | What changed | Why |
 |---|---|---|
 | High-Energy Pop vs Chill Lofi | 0 shared. #1 is Sunrise City vs Library Rain. | One wants energy 0.85 and the other wants 0.35. The catalog's songs are all 0.75 or higher, or 0.42 or lower. The mood and genre points land on different songs too. |
-| High-Energy Pop vs Deep Intense Rock | Same five songs, none in the same place. Storm Runner goes from #5 (31.45) to #1 (98.30). | Both want high energy. The catalog has exactly five songs above 0.75, so both lists hold all five. Rock's category points go to Storm Runner (60) and Gym Hero (40). Pop's go to Sunrise City (60) and Rooftop Lights (40). |
+| High-Energy Pop vs Deep Intense Rock | Same five songs, none in the same place. Storm Runner goes from #5 (31.45) to #1 (98.30). | Both want high energy. The catalog has five songs with energy of 0.75 or higher, so both lists hold all five. Rock's category points go to Storm Runner (60) and Gym Hero (40). Pop's go to Sunrise City (60) and Rooftop Lights (40). |
 | High-Energy Pop vs Energetic but Sad | Same five songs, none in the same place. Gym Hero goes from #3 to #1 (52.40). Sunrise City drops from #1 (97.35) to #2 (46.10). | No song is "sad", so Sunrise City loses its 40 mood points. Gym Hero and Sunrise City both still get 20 genre points for pop. Gym Hero's energy (0.93) is closer to 0.95. |
 | High-Energy Pop vs Genre and Mood Not in CSV | 0 shared. #1 is Sunrise City vs Spacewalk Thoughts. | They sit in opposite energy groups. The second one gets no category points at all. |
 | High-Energy Pop vs Chill but Frantic | 0 shared. #1 is Sunrise City vs Midnight Coding. | Frantic wants lofi and chill, so those songs get 60 category points. That keeps low-energy songs on top even though they are far from its energy target of 1.0. |
 | Chill Lofi vs Deep Intense Rock | 0 shared. #1 is Library Rain vs Storm Runner. | Opposite energy groups. The category points go to lofi/chill songs for one and rock/intense songs for the other. |
-| Chill Lofi vs Energetic but Sad | 0 shared. #1 is Library Rain vs Gym Hero. | Energy 0.35 vs 0.95. For Energetic but Sad, only genre (pop) can score, and only for two songs. |
+| Chill Lofi vs Energetic but Sad | 0 shared. #1 is Library Rain vs Gym Hero. | Energy 0.35 vs 0.95. For Energetic but Sad, only genre can earn category points; energy and tempo still contribute. |
 | Chill Lofi vs Genre and Mood Not in CSV | Same five songs. Two stay in place (Focus Flow #3, Coffee Shop Stories #5). Spacewalk Thoughts goes from #4 to #1 (39.40). Midnight Coding goes from #2 to #4. | Both want low energy. Chill Lofi has categories that separate the songs. The other one has none, so energy and tempo decide. Spacewalk Thoughts (energy 0.28, exactly 60 BPM) earns 29.40 for energy and the full 10 for tempo. |
 | Chill Lofi vs Chill but Frantic | Same five songs. Three stay in place. Only Library Rain and Midnight Coding swap #1 and #2. | Their category points are identical. Frantic's energy target of 1.0 gives Midnight Coding (0.42) 12.60 energy points and Library Rain (0.35) 10.50, so Midnight Coding comes out ahead (72.60 vs 70.50). |
 | Deep Intense Rock vs Energetic but Sad | Same five songs. Two stay in place (Rooftop Lights #4, Night Drive Loop #5). Storm Runner drops from #1 to #3. | Rock gives Storm Runner 60 category points and Gym Hero 40. "Sad" gives no mood points. The pop genre match gives Gym Hero and Sunrise City 20 points each, which lifts them above Storm Runner (36.80). |
@@ -214,7 +212,7 @@ I compared all 15 pairs of profiles under my original weights. "Shared" means ho
 
 **Not intended for:**
 
-- Predicting what someone will enjoy. 
+- Reliably predicting what someone will enjoy without listener testing.
 - Making decisions about artists, since it only holds a few made-up songs.
 
 
