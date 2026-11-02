@@ -21,16 +21,18 @@ Prompts:
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+The recommender looks at four things about each song: its mood, its genre, its energy and its tempo. The user tells it their favorite mood and genre, how energetic they want the music to be, and the tempo they like. Every song in the catalog is given a score out of 100, and the best-scoring songs are recommended.
 
-Prompts:  
+A song earns points like this:
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
+- **Mood (up to 40 points).** An exact match with the user's mood earns 40 points. If the moods are different but both are in the group "chill", "relaxed" and "focused", the song earns 20 points. Any other mood earns 0.
+- **Genre (up to 20 points).** An exact match earns 20 points, and anything else earns 0.
+- **Energy (up to 30 points).** The closer the song's energy is to the user's target, the more points it earns. A perfect match earns all 30 points, and the points shrink steadily as the gap grows.
+- **Tempo (up to 10 points).** The closer the song's tempo is to the user's target, the more points it earns. A perfect match earns all 10 points, and the points shrink steadily to zero when the difference reaches 40 beats per minute.
 
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+The points are added up, the songs are ranked from the highest total to the lowest, and the top `k` songs are returned. If two songs have the same total, the one that comes first alphabetically by title is listed first. Each recommendation also comes with the reasons behind its score, such as "mood matches chill (+40)".
+
+The weights (40, 20, 30 and 10) and the "chill, relaxed, focused" mood group are assumptions I picked by hand. I chose them because mood seemed to say more about how a song sounds than genre does in this small catalog, but I did not test them on real listeners. This version also does not learn from listening history. It only uses what the user says they want, and it never changes its scores based on what anyone plays, likes or skips.
 
 ---
 
